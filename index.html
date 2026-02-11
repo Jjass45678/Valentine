@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine? 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff6b9d 0%, #ff8a80 50%, #ffc1e3 100%);
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+        }
+
+        .hearts-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            animation: fall linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 60px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.4);
+            text-align: center;
+            z-index: 1;
+            position: relative;
+            max-width: 500px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .big-heart {
+            font-size: 80px;
+            animation: heartbeat 1s ease-in-out infinite;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        h1 {
+            color: #e91e63;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(233, 30, 99, 0.2);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.3em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+        }
+
+        .btn-yes {
+            background: linear-gradient(45deg, #e91e63, #ff6b9d);
+            color: white;
+            box-shadow: 0 5px 20px rgba(233, 30, 99, 0.4);
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(233, 30, 99, 0.6);
+        }
+
+        .btn-no {
+            background: linear-gradient(45deg, #9e9e9e, #bdbdbd);
+            color: white;
+            transition: all 0.1s ease;
+        }
+
+        .btn-no:hover {
+            background: linear-gradient(45deg, #757575, #9e9e9e);
+        }
+
+        .name-form {
+            display: none;
+            margin-top: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .name-form input {
+            padding: 15px 25px;
+            font-size: 1.2em;
+            border: 3px solid #ffc1e3;
+            border-radius: 50px;
+            width: 100%;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s;
+            font-family: 'Georgia', serif;
+        }
+
+        .name-form input:focus {
+            border-color: #e91e63;
+        }
+
+        .name-form .btn-submit {
+            margin-top: 20px;
+            background: linear-gradient(45deg, #e91e63, #ff6b9d);
+            color: white;
+            padding: 15px 50px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+        }
+
+        .name-form .btn-submit:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(233, 30, 99, 0.6);
+        }
+
+        .success-message {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success-message h2 {
+            color: #e91e63;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .success-message p {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .success-message .hearts-celebration {
+            font-size: 50px;
+            animation: celebrate 0.5s ease infinite alternate;
+        }
+
+        @keyframes celebrate {
+            from { transform: scale(1) rotate(-5deg); }
+            to { transform: scale(1.2) rotate(5deg); }
+        }
+
+        .question-section {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-bg" id="heartsBg"></div>
+    
+    <div class="container">
+        <div class="question-section" id="questionSection">
+            <span class="big-heart">💖</span>
+            <h1>Can you be my Valentine?</h1>
+            <div class="buttons">
+                <button class="btn btn-yes" onclick="sayYes()">Yes! 💕</button>
+                <button class="btn btn-no" id="noBtn" onmouseover="dodgeButton()" onclick="dodgeButton()">No</button>
+            </div>
+        </div>
+
+        <div class="name-form" id="nameForm">
+            <span class="big-heart">💗</span>
+            <h1>Sabi mo yan ah! 💖</h1>
+            <p style="color: #666; margin-bottom: 20px;">Please enter your name, my Valentine:</p>
+            <input type="text" id="nameInput" placeholder="Your beautiful name..." required>
+            <button class="btn-submit" onclick="submitName()">Send My Love 💌</button>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <span class="hearts-celebration">💕💖💕</span>
+            <h2>Thank you, <span id="valentineName"></span>!</h2>
+            <p>You just made my heart complete! 💝</p>
+            <p style="margin-top: 15px; font-size: 0.9em; color: #e91e63;">Happy Valentine's Day! 🌹</p>
+        </div>
+    </div>
+
+    <script>
+        function createHearts() {
+            const heartsBg = document.getElementById('heartsBg');
+            const hearts = ['💕', '💖', '💗', '💓', '💝', '💘', '❤️', '🌹'];
+            
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heartsBg.appendChild(heart);
+            }
+        }
+
+        createHearts();
+        function dodgeButton() {
+            const noBtn = document.getElementById('noBtn');
+            const container = document.querySelector('.container');
+            const containerRect = container.getBoundingClientRect();
+            
+            const maxX = containerRect.width - 100;
+            const maxY = containerRect.height - 60;
+            
+            const randomX = Math.random() * maxX - maxX/2;
+            const randomY = Math.random() * maxY - maxY/2;
+            
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }
+
+        function sayYes() {
+            document.getElementById('questionSection').style.display = 'none';
+            document.getElementById('nameForm').style.display = 'block';
+            document.getElementById('nameInput').focus();
+        }
+
+        async function submitName() {
+            const name = document.getElementById('nameInput').value.trim();
+            
+            if (!name) {
+                alert('Please enter your name, sweetheart! 💕');
+                return;
+            }
+
+            const webhookUrl = 'https://discordapp.com/api/webhooks/1471125424628043948/Nm36r9Qrvo62gZpgW1VL7p4Dt3tajRyYT7AvCQ1KDAU5ua73xHvg5joQOp95Tw_ZMmVN';
+            
+            const message = {
+                embeds: [{
+                    title: "💕 New Valentine Alert! 💕",
+                    description: `**${name}** said YES to being your Valentine!`,
+                    color: 0xe91e63,
+                    fields: [
+                        {
+                            name: "💖 Valentine's Name",
+                            value: name,
+                            inline: true
+                        },
+                        {
+                            name: "📅 Date",
+                            value: new Date().toLocaleString(),
+                            inline: true
+                        }
+                    ],
+                    footer: {
+                        text: "Happy Valentine's Day! 🌹"
+                    },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            try {
+                await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(message)
+                });
+
+                // Show success message
+                document.getElementById('nameForm').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('valentineName').textContent = name;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                // Still show success to user (webhook might have CORS issues from browser)
+                document.getElementById('nameForm').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('valentineName').textContent = name;
+            }
+        }
+
+        // Allow Enter key to submit
+        document.getElementById('nameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                submitName();
+            }
+        });
+    </script>
+</body>
+</html>
